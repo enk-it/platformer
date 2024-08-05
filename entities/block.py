@@ -1,10 +1,8 @@
-class Block:
-    def __init__(
-            self,
-            x,
-            y,
-            material
-    ):
-        self.x = x
-        self.y = y
-        self.material = material
+from pydantic import BaseModel
+from typing import Literal
+
+
+class Block(BaseModel):
+    x: int
+    y: int
+    material: Literal['stone', 'air', 'wood']

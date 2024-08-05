@@ -13,3 +13,6 @@ with open('data/player_data.json', 'r') as f:
 with open('data/cached_level.json', 'r') as f:
     text_data = f.read()
     cached_level = json.loads(text_data)
+
+
+# print(cached_level)

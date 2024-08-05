@@ -1,11 +1,18 @@
-from typing import Dict
+from typing import List
 
-from chunk import Chunk
+from entities.block import Block
+from pydantic import BaseModel
+from modules.data import settings
 
 
-class Level:
-    def __init__(self):
-        self.chunks: Dict[int, Dict[int, Chunk]] = {}
+class Level(BaseModel):
+    blocks: list[list[Block]]
 
-    def add_chunk(self, chunk: Chunk):
-        self.chunks[chunk.x][chunk.y] = chunk
+    def render(self) -> list[str]:
+        result = []
+        for block_row in self.blocks:
+            row = ""
+            for block in block_row:
+                row += settings["skin"][block.material]
+            result.append(row)
+        return result

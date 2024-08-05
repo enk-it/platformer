@@ -1,5 +1,5 @@
-from modules.Connection import Connection
-from modules.RenderStats import RenderStats
+from modules.connection import Connection
+from modules.renderStats import RenderStats
 from pydantic import BaseModel
 import asyncio
 

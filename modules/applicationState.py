@@ -6,4 +6,6 @@ class ApplicationState:
         self.last_key_pressed = 0
 
         self.game = None
+        self.view_offset_x = 0
+        self.view_offset_y = 0
         self.is_ready = False
