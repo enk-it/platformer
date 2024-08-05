@@ -2,7 +2,7 @@ import time
 from typing import Optional
 
 
-class RenderStats:
+class UpdaterStats:
     def __init__(self, target_fps: float):
         self._lastTime: Optional[float] = time.time()
         self._fps: float = 0
@@ -23,6 +23,9 @@ class RenderStats:
             self._delay_offset += 0.0001
 
         return delta
+
+    def get_target_fps(self) -> float:
+        return self._target_fps
 
     def fps(self) -> float:
         return self._fps

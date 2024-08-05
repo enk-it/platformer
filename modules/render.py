@@ -58,6 +58,7 @@ def render_one_frame(stdscr, state):
         stdscr,
         # delta_time=state.delta,
         fps=state.fps,
+        collision_fps=state.collision_fps,
         last_key_pressed=state.last_key_pressed,
         player_pos_y=state.game.me.get_pos_y(),
         player_pos_raw_y=state.game.me.pos_y,

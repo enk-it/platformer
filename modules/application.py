@@ -5,7 +5,7 @@ from entities.player import PlayerMe
 from modules.applicationState import ApplicationState
 from modules.connection import Connection
 from modules.render import render_one_frame
-from modules.renderStats import RenderStats
+from modules.updaterStats import UpdaterStats
 from modules.utils import setup, read_message, get_event_model
 
 
@@ -13,11 +13,13 @@ class Application:
     def __init__(
             self,
             state: ApplicationState,
-            render_stats: RenderStats,
+            render_stats: UpdaterStats,
+            collision_stats: UpdaterStats,
             connection: Connection | None = None
     ):
         self.state = state
         self.render_stats = render_stats
+        self.collision_stats = collision_stats
         self.connection = connection
 
         self.startup()
@@ -31,6 +33,7 @@ class Application:
         await setup(curses, stdscr)
 
         await asyncio.gather(
+            self.collision(),
             self.update(stdscr),
             self.keyboard_listener(stdscr),
             # self.event_polling()
@@ -50,11 +53,23 @@ class Application:
         elif key == ord(' '):
             self.state.game.me.jump()
 
-    async def update(self, stdscr):
+    async def collision(self):
         while True:
-            self.state.game.me.update()
+            self.state.collision_delta = self.collision_stats.delta()
+            self.state.collision_fps = self.collision_stats.fps()
+            self.state.collision_delay = self.collision_stats.delay()
+
+            target_fps = self.collision_stats.get_target_fps()
+
+            mult = target_fps / self.state.collision_fps
+
+            self.state.game.me.update(mult)
             self.state.game.check_me_on_ground()
 
+            await asyncio.sleep(self.collision_stats.delay())
+
+    async def update(self, stdscr):
+        while True:
             self.state.delta = self.render_stats.delta()
             self.state.fps = self.render_stats.fps()
             self.state.delay = self.render_stats.delay()

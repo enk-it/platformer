@@ -1,7 +1,5 @@
 from modules.connection import Connection
-from modules.renderStats import RenderStats
 from pydantic import BaseModel
-import asyncio
 
 
 async def setup(curses, stdscr):

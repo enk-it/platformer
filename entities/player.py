@@ -1,3 +1,4 @@
+
 class Player:
     def __init__(
             self,
@@ -22,11 +23,12 @@ class PlayerMe(Player):
         self.velocity_y = 0
         self.is_on_ground = False
 
-    def update(self):
-        self.pos_y += self.velocity_y
+    def update(self, time_mult):
+
+        self.pos_y += self.velocity_y * time_mult
 
         if (self.velocity_y < 0) or (not self.is_on_ground):
-            self.velocity_y += 0.005
+            self.velocity_y += 0.005 * time_mult
 
     def move_up(self):
         pass
