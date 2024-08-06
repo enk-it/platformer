@@ -17,10 +17,10 @@ class Application:
             collision_stats: UpdaterStats,
             connection: Connection | None = None
     ):
-        self.state = state
-        self.render_stats = render_stats
-        self.collision_stats = collision_stats
-        self.connection = connection
+        self.state: ApplicationState = state
+        self.render_stats: UpdaterStats = render_stats
+        self.collision_stats: UpdaterStats = collision_stats
+        self.connection: Connection | None = connection
 
         self.startup()
 
