@@ -5,22 +5,23 @@ from entities.game import Game
 from entities.level import Level
 from modules.application import Application
 from modules.applicationState import ApplicationState
-from modules.connection import Connection
+from modules.render import RenderEngine
 from modules.updaterStats import UpdaterStats
 
 from modules.data import settings
 from modules.data import cached_level
 
+stdscr = curses.initscr()
+level = Level.model_validate(cached_level)
+game = Game(level)
+state = ApplicationState(game)
+render_engine = RenderEngine(stdscr, curses, state)
 
-state = ApplicationState()
-state.game = Game()
-state.game.level = Level.model_validate(cached_level)
-
-render_stats = UpdaterStats(
+render_updater = UpdaterStats(
     target_fps=settings["framerate"]
 )
 
-collision_stats = UpdaterStats(
+collision_updater = UpdaterStats(
     target_fps=250
 )
 
@@ -31,10 +32,13 @@ collision_stats = UpdaterStats(
 
 app = Application(
     state,
-    render_stats,
-    collision_stats
+    render_engine,
+    render_updater,
+    collision_updater
     # connection,
 )
 
 if __name__ == '__main__':
-    asyncio.run(curses.wrapper(app.main))
+    asyncio.run(
+        app.main()
+    )

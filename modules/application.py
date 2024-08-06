@@ -4,7 +4,7 @@ import curses
 from entities.player import PlayerMe
 from modules.applicationState import ApplicationState
 from modules.connection import Connection
-from modules.render import render_one_frame
+from modules.render import RenderEngine
 from modules.updaterStats import UpdaterStats
 from modules.utils import setup, read_message, get_event_model
 
@@ -13,11 +13,13 @@ class Application:
     def __init__(
             self,
             state: ApplicationState,
+            render_engine: RenderEngine,
             render_stats: UpdaterStats,
             collision_stats: UpdaterStats,
             connection: Connection | None = None
     ):
         self.state: ApplicationState = state
+        self.render_engine: RenderEngine = render_engine
         self.render_stats: UpdaterStats = render_stats
         self.collision_stats: UpdaterStats = collision_stats
         self.connection: Connection | None = connection
@@ -26,16 +28,15 @@ class Application:
 
     def startup(self):
         self.state.game.me = PlayerMe("asd", "Vovan")
+        self.render_engine.setup()
         # достать из кеша и настроек всё что можно, если не получается создать новое и запросить
         pass
 
-    async def main(self, stdscr):
-        await setup(curses, stdscr)
-
+    async def main(self):
         await asyncio.gather(
             self._collision(),
-            self._update(stdscr),
-            self._keyboard_listener(stdscr),
+            self._update(),
+            self._keyboard_listener(),
             # self.event_polling()
         )
 
@@ -64,18 +65,18 @@ class Application:
 
             await asyncio.sleep(self.collision_stats.delay())
 
-    async def _update(self, stdscr):
+    async def _update(self):
         while True:
             self.state.delta = self.render_stats.delta()
             self.state.fps = self.render_stats.fps()
             self.state.delay = self.render_stats.delay()
 
-            render_one_frame(stdscr, self.state)
+            self.render_engine.render_frame()
             await asyncio.sleep(self.render_stats.delay())
 
-    async def _keyboard_listener(self, stdscr):
+    async def _keyboard_listener(self):
         while True:
-            key = stdscr.getch()
+            key = self.render_engine.stdscr.getch()
 
             if key != -1:
                 await self.on_key_pressed(key)

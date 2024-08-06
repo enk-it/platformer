@@ -29,7 +29,7 @@ class PlayerMe(Player):
         self.pos_y += self.velocity_y * time_mult
 
         if (self.velocity_y < 0) or (not self.is_on_ground):
-            self.velocity_y += 0.005 * time_mult
+            self.velocity_y += 0.0025 * time_mult
 
     def move_left(self):
         if self.can_go_left:

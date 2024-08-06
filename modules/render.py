@@ -1,81 +1,88 @@
-from entities.level import Level
-
 BASE_OFFSET_X = 10
 BASE_OFFSET_Y = 10
 
 
-def add_char_wrapper(stdscr, x, y, char):
-    height, width = stdscr.getmaxyx()
+class RenderEngine:
+    def __init__(
+            self,
+            stdscr,
+            curses,
+            state
+    ):
+        self.stdscr = stdscr
+        self.curses = curses
+        self.state = state
 
-    if x < 0 or y < 0 or x > width - 1 or y > height - 1:
-        return
+    def setup(self):
+        self.curses.curs_set(0)
+        self.stdscr.keypad(True)
+        self.stdscr.timeout(1)
+        self.curses.noecho()
 
-    stdscr.addch(y, x, char)
+        self.curses.start_color() # при желании отключить
 
+    def render_char(self, x, y, char):
+        height, width = self.stdscr.getmaxyx()
 
-def render_top_bar(stdscr, *args, **kwargs):
-    result = []
+        if x < 0 or y < 0 or x > width - 1 or y > height - 1:
+            return
 
-    for keyword in kwargs:
-        value = kwargs[keyword]
-        if isinstance(value, str):
-            result.append(f"{keyword}: {value}")
-        elif isinstance(value, int):
-            result.append(f"{keyword}: {value}")
-        elif isinstance(value, float):
-            result.append(f"{keyword}: {round(value, 4)}")
+        self.stdscr.addch(y, x, char)
 
-    for y, line in enumerate(result):
-        for x, char in enumerate(line):
-            # stdscr.addch(y, x, ord(char))
-            add_char_wrapper(stdscr, x, y, ord(char))
+    def render_top_bar(self, *args, **kwargs):
+        result = []
 
+        for keyword in kwargs:
+            value = kwargs[keyword]
+            if isinstance(value, str):
+                result.append(f"{keyword}: {value}")
+            elif isinstance(value, int):
+                result.append(f"{keyword}: {value}")
+            elif isinstance(value, float):
+                result.append(f"{keyword}: {round(value, 4)}")
 
-def render_terrain(stdscr, state):
-    rendered_level = state.game.level.render()
+        for y, line in enumerate(result):
+            for x, char in enumerate(line):
+                # stdscr.addch(y, x, ord(char))
+                self.render_char(x, y, ord(char))
 
-    for y, row in enumerate(rendered_level):
-        for x, char in enumerate(row):
-            # stdscr.addch(y + BASE_OFFSET_Y, x + BASE_OFFSET_X, ord(char))
-            add_char_wrapper(stdscr, x + BASE_OFFSET_X, y + BASE_OFFSET_Y,
-                             ord(char))
+    def render_terrain(self):
+        rendered_level = self.state.game.level.render()
 
+        for y, row in enumerate(rendered_level):
+            for x, char in enumerate(row):
+                # stdscr.addch(y + BASE_OFFSET_Y, x + BASE_OFFSET_X, ord(char))
+                self.render_char(x + BASE_OFFSET_X, y + BASE_OFFSET_Y,
+                                 ord(char))
 
-def render_players(stdscr, state):
-    x = state.game.me.get_pos_x()
-    y = state.game.me.get_pos_y()
-    add_char_wrapper(stdscr, x + BASE_OFFSET_X, y + BASE_OFFSET_Y, ord('i'))
-    # stdscr.addch(y + BASE_OFFSET_Y, x + BASE_OFFSET_X, ord('K'))
+    def render_players(self):
+        x = self.state.game.me.get_pos_x()
+        y = self.state.game.me.get_pos_y()
+        self.render_char(x + BASE_OFFSET_X, y + BASE_OFFSET_Y,
+                         ord('i'))
+        # stdscr.addch(y + BASE_OFFSET_Y, x + BASE_OFFSET_X, ord('K'))
 
+    def render_frame(self):
+        self.stdscr.clear()
 
-def render_one_frame(stdscr, state):
-    stdscr.clear()
+        x = self.state.game.me.get_pos_x()
+        y = self.state.game.me.get_pos_y()
 
-    x = state.game.me.get_pos_x()
-    y = state.game.me.get_pos_y()
+        self.render_top_bar(
+            # delta_time=state.delta,
+            fps=self.state.fps,
+            collision_fps=self.state.collision_fps,
+            last_key_pressed=self.state.last_key_pressed,
+            player_pos_y=y,
+            player_pos_raw_y=self.state.game.me.pos_y,
+            player_pos_x=x,
+            on_ground=self.state.game.me.is_on_ground,
+            materail_under_me=self.state.game.level.blocks[y + 1][x].material
+            # current_time=str(time.time()),
+        )
 
-    render_top_bar(
-        stdscr,
-        # delta_time=state.delta,
-        fps=state.fps,
-        collision_fps=state.collision_fps,
-        last_key_pressed=state.last_key_pressed,
-        player_pos_y=state.game.me.get_pos_y(),
-        player_pos_raw_y=state.game.me.pos_y,
-        player_pos_x=state.game.me.get_pos_x(),
-        on_ground=state.game.me.is_on_ground,
-        materail_under_me=state.game.level.blocks[y + 1][x].material
-        # current_time=str(time.time()),
-    )
+        self.render_terrain()
 
-    render_terrain(
-        stdscr,
-        state
-    )
+        self.render_players()
 
-    render_players(
-        stdscr,
-        state
-    )
-
-    stdscr.refresh()
+        self.stdscr.refresh()

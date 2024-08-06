@@ -4,8 +4,8 @@ from entities.player import PlayerMe
 
 
 class Game:
-    def __init__(self):
-        self.level = None
+    def __init__(self, level):
+        self.level = level
         self.me: PlayerMe | None = None
         self.players: list[Player] = []
 
