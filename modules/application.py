@@ -60,7 +60,7 @@ class Application:
             mult = target_fps / self.state.collision_fps
 
             self.state.game.me.update(mult)
-            self.state.game.check_me_on_ground()
+            self.state.game.check_me_ways()
 
             await asyncio.sleep(self.collision_stats.delay())
 

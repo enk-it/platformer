@@ -9,10 +9,15 @@ class Game:
         self.me: PlayerMe | None = None
         self.players: list[Player] = []
 
-    def check_me_on_ground(self):
+    def check_me_ways(self):
         x = self.me.get_pos_x()
         y = self.me.get_pos_y()
 
+        self.check_me_on_ground(x, y)
+        self.check_can_go_right(x, y)
+        self.check_can_go_left(x, y)
+
+    def check_me_on_ground(self, x, y):
         if len(self.level.blocks) <= y or y < 0:
             self.me.is_on_ground = False
             return
@@ -26,13 +31,17 @@ class Game:
         else:
             self.me.is_on_ground = False
 
-    def check_can_go_right(self):
-        #TODO
-        pass
+    def check_can_go_right(self, x, y):
+        if self.level.blocks[y][x + 1].material == "air":
+            self.me.can_go_right = True
+        else:
+            self.me.can_go_right = False
 
-    def check_can_go_left(self):
-        #TODO
-        pass
+    def check_can_go_left(self, x, y):
+        if self.level.blocks[y][x - 1].material == "air":
+            self.me.can_go_left = True
+        else:
+            self.me.can_go_left = False
 
     def add_player(self, player: Player):
         pass

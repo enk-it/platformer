@@ -22,6 +22,8 @@ class PlayerMe(Player):
         super().__init__(uid, name)
         self.velocity_y = 0
         self.is_on_ground = False
+        self.can_go_right = True
+        self.can_go_left = True
 
     def update(self, time_mult):
 
@@ -31,10 +33,12 @@ class PlayerMe(Player):
             self.velocity_y += 0.005 * time_mult
 
     def move_left(self):
-        self.pos_x -= 1
+        if self.can_go_left:
+            self.pos_x -= 1
 
     def move_right(self):
-        self.pos_x += 1
+        if self.can_go_right:
+            self.pos_x += 1
 
     def jump(self):
         if self.is_on_ground:
