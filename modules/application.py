@@ -33,9 +33,9 @@ class Application:
         await setup(curses, stdscr)
 
         await asyncio.gather(
-            self.collision(),
-            self.update(stdscr),
-            self.keyboard_listener(stdscr),
+            self._collision(),
+            self._update(stdscr),
+            self._keyboard_listener(stdscr),
             # self.event_polling()
         )
 
@@ -53,7 +53,7 @@ class Application:
         elif key == ord(' '):
             self.state.game.me.jump()
 
-    async def collision(self):
+    async def _collision(self):
         while True:
             self.state.collision_delta = self.collision_stats.delta()
             self.state.collision_fps = self.collision_stats.fps()
@@ -68,7 +68,7 @@ class Application:
 
             await asyncio.sleep(self.collision_stats.delay())
 
-    async def update(self, stdscr):
+    async def _update(self, stdscr):
         while True:
             self.state.delta = self.render_stats.delta()
             self.state.fps = self.render_stats.fps()
@@ -77,7 +77,7 @@ class Application:
             render_one_frame(stdscr, self.state)
             await asyncio.sleep(self.render_stats.delay())
 
-    async def keyboard_listener(self, stdscr):
+    async def _keyboard_listener(self, stdscr):
         while True:
             key = stdscr.getch()
 
