@@ -4,7 +4,7 @@
   "framerate": 20,
   "framerate_collision": 250,
   "skin": {
-    "stone": "@",
+    "stone": "H",
     "wood": "#",
     "air": " "
   }
