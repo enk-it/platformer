@@ -1,8 +1,7 @@
 {
   "host": "127.0.0.1",
   "port": "8888",
-  "framerate": 20,
-  "framerate_collision": 250,
+  "framerate": 144,
   "skin": {
     "stone": "H",
     "wood": "#",

@@ -21,7 +21,7 @@ render_stats = UpdaterStats(
 )
 
 collision_stats = UpdaterStats(
-    target_fps=settings["framerate_collision"]
+    target_fps=250
 )
 
 # connection = Connection(
