@@ -42,15 +42,11 @@ class Application:
     async def on_key_pressed(self, key):
         self.state.last_key_pressed = key
 
-        if key == ord('w'):
-            self.state.game.me.move_up()
-        elif key == ord('s'):
-            self.state.game.me.move_down()
-        elif key == ord('d'):
+        if key == ord('d'):
             self.state.game.me.move_right()
-        elif key == ord('a'):
+        if key == ord('a'):
             self.state.game.me.move_left()
-        elif key == ord(' '):
+        if key == ord(' '):
             self.state.game.me.jump()
 
     async def _collision(self):

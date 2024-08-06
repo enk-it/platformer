@@ -30,14 +30,6 @@ class PlayerMe(Player):
         if (self.velocity_y < 0) or (not self.is_on_ground):
             self.velocity_y += 0.005 * time_mult
 
-    def move_up(self):
-        pass
-        # self.pos_y -= 1
-
-    def move_down(self):
-        pass
-        # self.pos_y += 1
-
     def move_left(self):
         self.pos_x -= 1
 
