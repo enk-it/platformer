@@ -44,7 +44,7 @@ def render_terrain(stdscr, state):
 def render_players(stdscr, state):
     x = state.game.me.get_pos_x()
     y = state.game.me.get_pos_y()
-    add_char_wrapper(stdscr, x + BASE_OFFSET_X, y + BASE_OFFSET_Y, ord('K'))
+    add_char_wrapper(stdscr, x + BASE_OFFSET_X, y + BASE_OFFSET_Y, ord('i'))
     # stdscr.addch(y + BASE_OFFSET_Y, x + BASE_OFFSET_X, ord('K'))
 
 
