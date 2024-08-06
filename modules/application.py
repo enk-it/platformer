@@ -80,7 +80,7 @@ class Application:
             if key != -1:
                 await self.on_key_pressed(key)
 
-            await asyncio.sleep(self.render_stats.delay())
+            await asyncio.sleep(self.collision_stats.delay())
 
     async def event_polling(self):
         while True:
