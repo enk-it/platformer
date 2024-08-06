@@ -7,7 +7,7 @@ class Player:
     ):
         self._uid = uid
         self._name = name
-        self.pos_x = 0
+        self.pos_x = 5
         self.pos_y = -3
 
     def get_pos_y(self):
