@@ -7,7 +7,7 @@ class Player:
         self._uid = uid
         self._name = name
         self.pos_x = 5
-        self.pos_y = -3
+        self.pos_y = 3
 
     def get_pos_y(self):
         return round(self.pos_y)
@@ -23,6 +23,7 @@ class PlayerMe(Player):
         self.is_on_ground = False
         self.can_go_right = True
         self.can_go_left = True
+        self.can_go_up = True
 
     def update(self, time_mult):
 
