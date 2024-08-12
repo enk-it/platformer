@@ -2,10 +2,8 @@ class Player:
     def __init__(
             self,
             uid,
-            name,
     ):
         self._uid = uid
-        self._name = name
         self.pos_x = 5
         self.pos_y = 3
 
@@ -15,10 +13,13 @@ class Player:
     def get_pos_x(self):
         return int(self.pos_x)
 
+    def get_uid(self):
+        return self._uid
+
 
 class PlayerMe(Player):
-    def __init__(self, uid, name):
-        super().__init__(uid, name)
+    def __init__(self, uid):
+        super().__init__(uid)
         self.velocity_y = 0
         self.is_on_ground = False
         self.can_go_right = True
@@ -44,3 +45,9 @@ class PlayerMe(Player):
         if self.is_on_ground:
             self.velocity_y = -0.15
             # self.is_on_ground = False
+
+    def broadcast_position(self):
+        return (
+            self.get_pos_x(),
+            self.get_pos_y()
+        )

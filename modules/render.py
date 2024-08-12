@@ -60,6 +60,12 @@ class RenderEngine:
         y = self.state.game.me.get_pos_y()
         self.render_char(x + BASE_OFFSET_X, y + BASE_OFFSET_Y,
                          ord('i'))
+
+        for player in self.state.game.players:
+            x = player.get_pos_x()
+            y = player.get_pos_y()
+            self.render_char(x + BASE_OFFSET_X, y + BASE_OFFSET_Y,
+                             ord('j'))
         # stdscr.addch(y + BASE_OFFSET_Y, x + BASE_OFFSET_X, ord('K'))
 
     def render_frame(self):

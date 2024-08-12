@@ -1,6 +1,7 @@
 from entities.player import Player
 
 from entities.player import PlayerMe
+from schemas.responses import UserResponse
 
 
 class Game:
@@ -49,14 +50,26 @@ class Game:
             if self.me.velocity_y < 0:
                 self.me.velocity_y = 0
 
+    def set_players(self, players: list[Player]):
+        self.players = players
+        pass
+
     def add_player(self, player: Player):
+        self.players.append(player)
         pass
 
     def remove_player(self, player_id):
-        pass
+        temp_player = None
+        for player in self.players:
+            if player.get_uid() == player_id:
+                temp_player = player
+                break
+        if temp_player is not None:
+            self.players.remove(temp_player)
 
-    def set_me(self, me: Player):
-        pass
-
-    def set_level(self, chunks):
-        pass
+    def update_player_position(self, uid: str, x: int, y: int):
+        for player in self.players:
+            if player.get_uid() == uid:
+                player.pos_x = x
+                player.pos_y = y
+                break

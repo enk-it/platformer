@@ -1,6 +1,8 @@
 from modules.connection import Connection
 from pydantic import BaseModel
 
+from schemas.responses import adaptor
+
 
 async def setup(curses, stdscr):
     curses.curs_set(0)
@@ -24,5 +26,6 @@ async def read_message(connection: Connection) -> str:
     return message
 
 
-def get_event_model(data: str):
+def get_response_model(data: str):
     return adaptor.validate_json(data)
+
