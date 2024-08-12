@@ -59,7 +59,7 @@ class Application:
             self.state.game.me.move_right()
         if key == ord('a'):
             self.state.game.me.move_left()
-        if key == ord(' '):
+        if key == ord('w'):
             self.state.game.me.jump()
 
     async def _collision(self):

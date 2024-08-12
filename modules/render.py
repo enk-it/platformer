@@ -69,7 +69,7 @@ class RenderEngine:
         # stdscr.addch(y + BASE_OFFSET_Y, x + BASE_OFFSET_X, ord('K'))
 
     def render_frame(self):
-        self.stdscr.clear()
+        # self.stdscr.clear()
 
         x = self.state.game.me.get_pos_x()
         y = self.state.game.me.get_pos_y()
@@ -81,6 +81,7 @@ class RenderEngine:
             last_key_pressed=self.state.last_key_pressed,
             player_pos_y=y,
             player_pos_raw_y=self.state.game.me.pos_y,
+            velocity_y=self.state.game.me.velocity_y,
             player_pos_x=x,
             on_ground=self.state.game.me.is_on_ground,
             materail_under_me=self.state.game.level.blocks[y + 1][x].material

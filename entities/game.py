@@ -30,6 +30,7 @@ class Game:
         if self.level.blocks[y + 1][x].material != "air":
             self.me.is_on_ground = True
             self.me.velocity_y = 0
+            self.me.pos_y = self.me.get_pos_y()
         else:
             self.me.is_on_ground = False
 
