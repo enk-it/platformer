@@ -7,8 +7,8 @@ class Player:
             uid,
     ):
         self._uid = uid
-        self.pos_x = 5
-        self.pos_y = 3
+        self.pos_x = 2
+        self.pos_y = 0
 
     def get_pos_y(self):
         return math.floor(self.pos_y)

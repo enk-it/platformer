@@ -62,6 +62,16 @@ class Application:
         if key == ord('w'):
             self.state.game.me.jump()
 
+        if key == ord('D'):
+            self.render_engine.offset_x += 1
+        if key == ord('A'):
+            self.render_engine.offset_x -= 1
+        if key == ord('S'):
+            self.render_engine.offset_y += 1
+        if key == ord('W'):
+            self.render_engine.offset_y -= 1
+
+
     async def _collision(self):
         while True:
             self.state.collision_delta = self.collision_stats.delta()

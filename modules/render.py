@@ -1,6 +1,6 @@
 BASE_OFFSET_X = 10
 BASE_OFFSET_Y = 10
-
+import logging
 
 class RenderEngine:
     def __init__(
@@ -12,6 +12,8 @@ class RenderEngine:
         self.stdscr = stdscr
         self.curses = curses
         self.state = state
+        self.offset_x = 0
+        self.offset_y = 0
 
     def setup(self):
         self.curses.curs_set(0)
@@ -24,10 +26,15 @@ class RenderEngine:
     def render_char(self, x, y, char):
         height, width = self.stdscr.getmaxyx()
 
-        if x < 0 or y < 0 or x > width - 1 or y > height - 1:
+        if x < 0 or y < 0 or x >= width - 1 or y >= height - 1:
+            logging.info(f"{x} {y} {width} {height}")
             return
 
         self.stdscr.addch(y, x, char)
+
+
+    def render_with_offset(self, x, y, char):
+        self.render_char(x + self.offset_x, y + self.offset_y, char)
 
     def render_top_bar(self, *args, **kwargs):
         result = []
@@ -52,24 +59,24 @@ class RenderEngine:
         for y, row in enumerate(rendered_level):
             for x, char in enumerate(row):
                 # stdscr.addch(y + BASE_OFFSET_Y, x + BASE_OFFSET_X, ord(char))
-                self.render_char(x + BASE_OFFSET_X, y + BASE_OFFSET_Y,
+                self.render_with_offset(x + BASE_OFFSET_X, y + BASE_OFFSET_Y,
                                  ord(char))
 
     def render_players(self):
         x = self.state.game.me.get_pos_x()
         y = self.state.game.me.get_pos_y()
-        self.render_char(x + BASE_OFFSET_X, y + BASE_OFFSET_Y,
+        self.render_with_offset(x + BASE_OFFSET_X, y + BASE_OFFSET_Y,
                          ord('i'))
 
         for player in self.state.game.players:
             x = player.get_pos_x()
             y = player.get_pos_y()
-            self.render_char(x + BASE_OFFSET_X, y + BASE_OFFSET_Y,
+            self.render_with_offset(x + BASE_OFFSET_X, y + BASE_OFFSET_Y,
                              ord('j'))
         # stdscr.addch(y + BASE_OFFSET_Y, x + BASE_OFFSET_X, ord('K'))
 
     def render_frame(self):
-        # self.stdscr.clear()
+        self.stdscr.clear()
 
         x = self.state.game.me.get_pos_x()
         y = self.state.game.me.get_pos_y()
