@@ -56,6 +56,3 @@ if __name__ == '__main__':
         app.main()
     )
 
-    # asyncio.run(
-    #     app.main()
-    # )
