@@ -91,7 +91,7 @@ class RenderEngine:
             velocity_y=self.state.game.me.velocity_y,
             player_pos_x=x,
             on_ground=self.state.game.me.is_on_ground,
-            materail_under_me=self.state.game.level.blocks[y + 1][x].material
+            # materail_under_me=self.state.game.level.blocks[y + 1][x].material
             # current_time=str(time.time()),
         )
 
