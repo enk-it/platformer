@@ -17,10 +17,10 @@ class UpdaterStats:
         self._lastTime = current_time
         self._fps = 1 / delta
 
-        if self._fps < self._target_fps:
-            self._delay_offset -= 0.00005
-        elif self._fps > self._target_fps:
-            self._delay_offset += 0.00005
+        # if self._fps < self._target_fps:
+        #     self._delay_offset -= 0.00005
+        # elif self._fps > self._target_fps:
+        #     self._delay_offset += 0.00005
 
         return delta
 
