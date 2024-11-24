@@ -13,11 +13,14 @@ class Game:
     def check_me_ways(self):
         x = self.me.get_pos_x()
         y = self.me.get_pos_y()
+        try:
+            self.check_me_on_ground(x, y)
+            self.check_can_go_right(x, y)
+            self.check_can_go_left(x, y)
+            self.check_can_go_up(x, y)
+        except IndexError:
+            pass
 
-        self.check_me_on_ground(x, y)
-        self.check_can_go_right(x, y)
-        self.check_can_go_left(x, y)
-        self.check_can_go_up(x, y)
 
     def check_me_on_ground(self, x, y):
         if len(self.level.blocks) <= y or y < 0:
