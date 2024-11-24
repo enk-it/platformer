@@ -80,7 +80,7 @@ class Application:
 
             target_fps = self.collision_stats.get_target_fps()
 
-            mult = target_fps / self.state.collision_fps
+            mult = 1 #target_fps / self.state.collision_fps
 
             self.state.game.me.update(mult)
             self.state.game.check_me_ways()
