@@ -35,13 +35,13 @@ class Game:
             self.me.is_on_ground = False
 
     def check_can_go_right(self, x, y):
-        if self.level.blocks[y][x + 1].material == "air":
+        if len(self.level.blocks[y]) > x + 1 and self.level.blocks[y][x + 1].material == "air":
             self.me.can_go_right = True
         else:
             self.me.can_go_right = False
 
     def check_can_go_left(self, x, y):
-        if self.level.blocks[y][x - 1].material == "air":
+        if x - 1 >= 0 and self.level.blocks[y][x - 1].material == "air":
             self.me.can_go_left = True
         else:
             self.me.can_go_left = False
